@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - URL Trimmer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div class="logo-container me-2">
+                    <i class="fas fa-link text-primary"></i>
+                </div>
+                <span class="fw-bold text-primary">URL Trimmer</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>John Doe
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="py-4">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-6 fw-bold mb-2">Welcome back, John!</h1>
+                        <p class="text-muted mb-0">Manage your shortened URLs and track their performance</p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#createLinkModal">
+                            <i class="fas fa-plus me-2"></i>Create New Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Cards -->
+    <section class="py-2">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-link text-primary fa-3x mb-3"></i>
+                        <div class="stats-number">24</div>
+                        <p class="text-muted mb-0">Total Links</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-mouse-pointer text-success fa-3x mb-3"></i>
+                        <div class="stats-number">1,247</div>
+                        <p class="text-muted mb-0">Total Clicks</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-chart-line text-warning fa-3x mb-3"></i>
+                        <div class="stats-number">52</div>
+                        <p class="text-muted mb-0">Avg. Clicks</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <i class="fas fa-calendar text-info fa-3x mb-3"></i>
+                        <div class="stats-number">7</div>
+                        <p class="text-muted mb-0">This Week</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Link Management -->
+    <section class="py-4">
+        <div class="container">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-0">Your Links</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2 justify-content-md-end">
+                                <input type="text" class="form-control" placeholder="Search links..." id="searchLinks">
+                                <button class="btn btn-outline-secondary" id="refreshLinks">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="linksTable">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4 py-3">Link</th>
+                                    <th class="px-4 py-3">Original URL</th>
+                                    <th class="px-4 py-3">Platform</th>
+                                    <th class="px-4 py-3">Clicks</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3">Created</th>
+                                    <th class="px-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Sample Data -->
+                                <tr>
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="fw-semibold">short.ly/abc123</span>
+                                            <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('short.ly/abc123')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-truncate d-inline-block" style="max-width: 200px;" title="https://example.com/very-long-url-that-needs-shortening">
+                                            https://example.com/very-long-url...
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fab fa-twitter text-primary me-2"></i>
+                                            <span class="small">Twitter</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="fw-semibold">142</span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="protection-badge protected">
+                                            <i class="fas fa-lock"></i> Protected
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-muted">2 days ago</span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" title="Analytics" onclick="showAnalytics('abc123')">
+                                                <i class="fas fa-chart-bar"></i>
+                                            </button>
+                                            <button class="btn btn-outline-warning" title="Edit" onclick="editLink('abc123')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" title="Delete" onclick="deleteLink('abc123')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="fw-semibold">short.ly/xyz789</span>
+                                            <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('short.ly/xyz789')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-truncate d-inline-block" style="max-width: 200px;" title="https://github.com/user/repository">
+                                            https://github.com/user/repository
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fab fa-github text-dark me-2"></i>
+                                            <span class="small">GitHub</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="fw-semibold">89</span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="protection-badge public">
+                                            <i class="fas fa-globe"></i> Public
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-muted">1 week ago</span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" title="Analytics" onclick="showAnalytics('xyz789')">
+                                                <i class="fas fa-chart-bar"></i>
+                                            </button>
+                                            <button class="btn btn-outline-warning" title="Edit" onclick="editLink('xyz789')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" title="Delete" onclick="deleteLink('xyz789')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Showing 2 of 24 links</span>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled">
+                                    <span class="page-link">Previous</span>
+                                </li>
+                                <li class="page-item active">
+                                    <span class="page-link">1</span>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Link Modal -->
+    <div class="modal fade" id="createLinkModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Short Link</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createLinkForm">
+                        <div class="mb-3">
+                            <label for="longUrl" class="form-label">Long URL *</label>
+                            <input type="url" class="form-control" id="longUrl" placeholder="https://example.com/very-long-url" required>
+                            <div class="invalid-feedback" id="urlError"></div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="customAlias" class="form-label">Custom Alias (optional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">short.ly/</span>
+                                        <input type="text" class="form-control" id="customAlias" placeholder="my-link">
+                                    </div>
+                                    <div class="form-text">Leave empty for auto-generated alias</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="expirationDate" class="form-label">Expiration Date (optional)</label>
+                                    <input type="datetime-local" class="form-control" id="expirationDate">
+                                    <div class="form-text">Leave empty for permanent link</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password Protection (optional)</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Enter password">
+                                    <div class="form-text">Add password to protect your link</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="platformReference" class="form-label">Platform Reference (optional)</label>
+                                    <input type="text" class="form-control" id="platformReference" placeholder="e.g., Twitter, bio.txt">
+                                    <div class="form-text">Note where you'll use this link</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Platform Logo</label>
+                            <div class="d-flex flex-wrap gap-2" id="platformLogos">
+                                <button type="button" class="btn btn-outline-secondary platform-btn" data-platform="twitter">
+                                    <i class="fab fa-twitter me-2"></i>Twitter
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary platform-btn" data-platform="facebook">
+                                    <i class="fab fa-facebook me-2"></i>Facebook
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary platform-btn" data-platform="instagram">
+                                    <i class="fab fa-instagram me-2"></i>Instagram
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary platform-btn" data-platform="linkedin">
+                                    <i class="fab fa-linkedin me-2"></i>LinkedIn
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary platform-btn" data-platform="github">
+                                    <i class="fab fa-github me-2"></i>GitHub
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary platform-btn active" data-platform="default">
+                                    <i class="fas fa-link me-2"></i>Default
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="createLinkBtn">
+                        <i class="fas fa-plus me-2"></i>Create Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Modal -->
+    <div class="modal fade" id="analyticsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Link Analytics</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h3 class="text-primary">142</h3>
+                                <p class="text-muted">Total Clicks</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h3 class="text-success">7</h3>
+                                <p class="text-muted">Today</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h3 class="text-warning">2 days</h3>
+                                <p class="text-muted">Remaining</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mt-4">
+                        <h6>Recent Activity</h6>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Click from United States</strong>
+                                    <br><small class="text-muted">Chrome on Windows</small>
+                                </div>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Click from Canada</strong>
+                                    <br><small class="text-muted">Safari on iPhone</small>
+                                </div>
+                                <small class="text-muted">5 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
