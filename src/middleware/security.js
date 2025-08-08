@@ -2,6 +2,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const Joi = require('joi');
 const redisClient = require('../cache/redisClient');
+const validationSchemas = require('../validation/schemas');
 
 // Helmet security configuration
 const helmetConfig = helmet({
@@ -74,33 +75,8 @@ const createUrlRateLimit = createRateLimit(
     'Too many URLs created, please slow down.'
 );
 
-// Validation schemas
-const schemas = {
-    register: Joi.object({
-        email: Joi.string().email().required().max(255),
-        password: Joi.string().min(8).max(128).required()
-            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)'))
-            .message('Password must contain at least one lowercase letter, one uppercase letter, and one number')
-    }),
-
-    login: Joi.object({
-        email: Joi.string().email().required(),
-        password: Joi.string().required()
-    }),
-
-    createUrl: Joi.object({
-        original_url: Joi.string().uri().required().max(2048),
-        custom_alias: Joi.string().alphanum().min(3).max(50).optional(),
-        expires_at: Joi.date().iso().greater('now').optional(),
-        password: Joi.string().min(4).max(50).optional(),
-        platform_reference: Joi.string().max(100).optional()
-    }),
-
-    shortenUrl: Joi.object({
-        original_url: Joi.string().uri().required().max(2048),
-        custom_alias: Joi.string().alphanum().min(3).max(50).optional()
-    })
-};
+// Import validation schemas from separate file
+const schemas = validationSchemas;
 
 // Validation middleware factory
 function validateRequest(schema) {

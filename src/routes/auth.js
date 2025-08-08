@@ -12,11 +12,25 @@ router.post('/register',
     AuthController.register
 );
 
-// Login user
+// Login user (username-based)
 router.post('/login',
     authRateLimit,
     validateRequest(schemas.login),
     AuthController.login
+);
+
+// Login user (email-based alternative)
+router.post('/email-login',
+    authRateLimit,
+    validateRequest(schemas.emailLogin),
+    AuthController.emailLogin
+);
+
+// Send verification email
+router.post('/send-verification',
+    authRateLimit,
+    validateRequest(schemas.verification),
+    AuthController.sendVerification
 );
 
 // Get current user profile (protected)
