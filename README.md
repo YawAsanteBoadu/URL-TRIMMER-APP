@@ -1,266 +1,362 @@
-# URL Trimmer - Frontend Application
+# URL Shortener Backend API
 
-🚀 A modern, responsive frontend for the URL Trimmer application built with HTML, CSS, Bootstrap, and JavaScript. Features a clean design inspired by modern tech platforms with comprehensive URL shortening and management capabilities.
+A robust, scalable URL shortener service built with Node.js, PostgreSQL, and Redis. Features include URL shortening, custom aliases, expiration dates, password protection, click analytics, and user authentication.
 
 ## ✨ Features
 
-### Public Interface
-- **Homepage**: Clean, modern landing page with URL shortening functionality
-- **Instant URL Shortening**: Convert long URLs to short, shareable links
-- **Custom Aliases**: Optional custom short codes for personalized links
-- **Real-time Validation**: Client-side URL and alias validation
-- **Copy to Clipboard**: One-click copying of shortened URLs
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- 🔗 **URL Shortening**: Convert long URLs into short, shareable links
+- 👤 **User Authentication**: JWT-based authentication system
+- 🎯 **Custom Aliases**: Create personalized short codes
+- ⏰ **Link Expiration**: Set expiration dates for links
+- 🔒 **Password Protection**: Secure links with passwords
+- 📊 **Click Analytics**: Track click counts and statistics
+- 🚀 **Redis Caching**: High-performance caching for fast redirections
+- 🛡️ **Security**: Rate limiting, input validation, and security headers
+- 📱 **CORS Support**: Cross-origin requests enabled for frontend integration
 
-### Authentication System
-- **User Registration**: Secure signup with password strength indicators
-- **User Login**: Authentication with remember me functionality
-- **Form Validation**: Real-time validation with helpful error messages
-- **Password Toggle**: Show/hide password functionality
-- **Social Login Ready**: Placeholder for Google and GitHub integration
+## 🏗️ Architecture
 
-### Authenticated Dashboard
-- **Link Management**: Create, edit, delete, and organize shortened links
-- **Analytics Dashboard**: View click statistics and performance metrics
-- **Advanced Features**:
-  - Password protection for links
-  - Expiration date setting
-  - Platform reference tracking
-  - Custom platform logos
-- **Search & Filter**: Find links quickly with search functionality
-- **Bulk Operations**: Manage multiple links efficiently
+- **Language**: Node.js with Express.js
+- **Database**: PostgreSQL with connection pooling
+- **Cache**: Redis for performance optimization
+- **Authentication**: JWT tokens
+- **Security**: Helmet, rate limiting, input validation
+- **Pattern**: MVC (Model-View-Controller)
 
-### Redirect System
-- **Smart Redirection**: Handles URL redirection with loading states
-- **Password Protection**: Secure access to protected links
-- **Error Handling**: Graceful handling of expired or invalid links
-- **Click Tracking**: Records analytics data for link performance
-- **Platform Display**: Shows source platform information
+## 📋 Prerequisites
 
-## 🏗️ Project Structure
+- Node.js (v16 or higher)
+- PostgreSQL (v12 or higher)
+- Redis (v6 or higher)
+- npm or yarn
 
-```
-├── index.html          # Homepage with URL shortening
-├── login.html          # User authentication page
-├── signup.html         # User registration page
-├── dashboard.html      # Authenticated user dashboard
-├── redirect.html       # URL redirection handler
-├── styles.css          # Custom CSS styles and animations
-├── script.js           # Homepage JavaScript functionality
-├── auth.js             # Authentication JavaScript
-├── dashboard.js        # Dashboard JavaScript
-├── redirect.js         # Redirect page JavaScript
-└── README.md           # Project documentation
-```
+## 🚀 Quick Start
 
-## 🎨 Design System
+### 1. Clone and Install
 
-### Color Palette
-- **Primary**: `#2563eb` (Blue)
-- **Success**: `#10b981` (Green)
-- **Warning**: `#f59e0b` (Amber)
-- **Danger**: `#ef4444` (Red)
-- **Dark**: `#1f2937` (Gray)
-
-### Typography
-- **Font Family**: Inter, system fonts
-- **Headings**: Bold weights for hierarchy
-- **Body Text**: Regular weight for readability
-
-### Components
-- **Cards**: Elevated with shadows and rounded corners
-- **Buttons**: Gradient backgrounds with hover effects
-- **Forms**: Clean inputs with validation states
-- **Navigation**: Responsive with mobile-friendly collapsing
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Web server (for proper CORS handling) or local development server
-
-### Installation
-
-1. **Clone or Download**: Get the project files
-2. **Open in Browser**: 
-   - For development: Open `index.html` directly
-   - For production: Serve through a web server
-
-### Local Development Server
-
-Using Python:
 ```bash
-# Python 3
-python -m http.server 8000
-
-# Python 2
-python -m SimpleHTTPServer 8000
+git clone <repository-url>
+cd url-shortener-backend
+npm install
 ```
 
-Using Node.js:
+### 2. Environment Setup
+
+Copy the environment template and configure your settings:
+
 ```bash
-npx serve .
+cp .env.example .env
 ```
 
-Using PHP:
+Edit `.env` with your configuration:
+
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Database Configuration
+DATABASE_URL=postgresql://username:password@localhost:5432/url_shortener
+
+# Redis Configuration
+REDIS_URL=redis://localhost:6379
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_EXPIRES_IN=7d
+
+# Application Configuration
+BASE_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:3001
+```
+
+### 3. Database Setup
+
+Create PostgreSQL database and run migrations:
+
 ```bash
-php -S localhost:8000
+# Create database
+createdb url_shortener
+
+# Run database migration
+npm run migrate
 ```
 
-## 📱 Responsive Breakpoints
+### 4. Start the Server
 
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
+```bash
+# Development mode with auto-reload
+npm run dev
 
-## 🔧 Configuration
+# Production mode
+npm start
+```
 
-### API Integration
-The frontend is designed to work with a backend API. Update the following files to connect to your backend:
+The server will start on `http://localhost:3000`
 
-1. **script.js**: Update `simulateApiCall()` function
-2. **auth.js**: Update `simulateLogin()` and `simulateSignup()` functions
-3. **dashboard.js**: Update `simulateCreateLink()` function
-4. **redirect.js**: Update `getLinkData()` and related functions
+## 📡 API Endpoints
 
-### Environment Variables
-For production deployment, configure:
-- API endpoint URLs
-- Authentication providers (Google, GitHub)
-- Analytics tracking codes
-- CDN URLs for assets
+### Health Check
+```http
+GET /health
+```
 
-## 🎯 Key Features Implementation
+### Authentication
 
-### URL Shortening Flow
-1. User enters long URL
-2. Optional custom alias input
-3. Client-side validation
-4. API call to backend
-5. Display shortened URL
-6. Copy to clipboard functionality
+#### Register User
+```http
+POST /api/auth/register
+Content-Type: application/json
 
-### Authentication Flow
-1. User registration/login forms
-2. Client-side validation
-3. Password strength checking
-4. API authentication
-5. Session management
-6. Redirect to dashboard
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+```
 
-### Dashboard Features
-1. Statistics display with animations
-2. Link creation modal
-3. Link management table
-4. Search and filtering
-5. Analytics modal
-6. Platform logo selection
+#### Login User
+```http
+POST /api/auth/login
+Content-Type: application/json
 
-### Redirect Handling
-1. Extract short code from URL
-2. API call to get link data
-3. Password protection check
-4. Click tracking
-5. Redirect to original URL
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+```
+
+#### Get User Profile
+```http
+GET /api/auth/profile
+Authorization: Bearer <jwt_token>
+```
+
+### URL Management
+
+#### Shorten URL (Public)
+```http
+POST /api/shorten
+Content-Type: application/json
+
+{
+  "original_url": "https://example.com/very/long/url",
+  "custom_alias": "my-link" // optional
+}
+```
+
+#### Create URL (Authenticated - Full Features)
+```http
+POST /api/links
+Authorization: Bearer <jwt_token>
+Content-Type: application/json
+
+{
+  "original_url": "https://example.com/very/long/url",
+  "custom_alias": "my-link", // optional
+  "expires_at": "2024-12-31T23:59:59Z", // optional
+  "password": "secret123", // optional
+  "platform_reference": "mobile-app" // optional
+}
+```
+
+#### Get User URLs
+```http
+GET /api/links?page=1&limit=20
+Authorization: Bearer <jwt_token>
+```
+
+#### Get URL Analytics
+```http
+GET /api/analytics/:short_code
+Authorization: Bearer <jwt_token>
+```
+
+#### Delete URL
+```http
+DELETE /api/links/:short_code
+Authorization: Bearer <jwt_token>
+```
+
+### URL Redirection
+
+#### Redirect to Original URL
+```http
+GET /:short_code?password=secret123
+```
+
+For password-protected links, include the password as a query parameter.
 
 ## 🔒 Security Features
 
-- **Input Validation**: Client-side validation for all forms
-- **XSS Prevention**: Proper input sanitization
-- **HTTPS Ready**: Designed for secure connections
-- **Password Protection**: Secure link access
-- **Domain Blacklisting**: Prevent malicious URLs
+- **Rate Limiting**: Prevents abuse with configurable limits
+- **Input Validation**: Joi schema validation for all inputs
+- **Password Hashing**: Bcrypt for secure password storage
+- **JWT Authentication**: Secure token-based authentication
+- **Security Headers**: Helmet middleware for security headers
+- **CORS Protection**: Configurable cross-origin resource sharing
+- **URL Blacklist**: Prevents shortening of malicious URLs
 
-## 🎨 Customization
+## 📊 Database Schema
 
-### Styling
-- Edit `styles.css` for custom styling
-- Modify CSS variables in `:root` for theme changes
-- Update Bootstrap classes for layout modifications
+### Users Table
+```sql
+users (
+  id UUID PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+```
 
-### Branding
-- Replace logo and brand name in navigation
-- Update color scheme in CSS variables
-- Modify footer and branding elements
+### URLs Table
+```sql
+urls (
+  id UUID PRIMARY KEY,
+  short_code VARCHAR(10) UNIQUE NOT NULL,
+  original_url TEXT NOT NULL,
+  custom_alias VARCHAR(50) UNIQUE,
+  expires_at TIMESTAMP,
+  password_hash VARCHAR(255),
+  click_count INTEGER DEFAULT 0,
+  platform_reference VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  user_id UUID REFERENCES users(id)
+)
+```
 
-### Features
-- Add new platform integrations
-- Extend analytics capabilities
-- Implement additional link options
+## 🚀 Performance Optimizations
 
-## 📊 Browser Support
-
-- **Chrome**: 90+
-- **Firefox**: 88+
-- **Safari**: 14+
-- **Edge**: 90+
-
-## 🔄 API Integration Points
-
-The frontend expects the following API endpoints:
-
-### Public Endpoints
-- `POST /api/shorten` - Create short URL
-- `GET /api/redirect/:code` - Get redirect data
-
-### Authenticated Endpoints
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
-- `GET /api/dashboard/stats` - Dashboard statistics
-- `GET /api/links` - User's links
-- `POST /api/links` - Create new link
-- `PUT /api/links/:id` - Update link
-- `DELETE /api/links/:id` - Delete link
-- `GET /api/links/:id/analytics` - Link analytics
-
-## 🚀 Deployment
-
-### Static Hosting
-Deploy to any static hosting service:
-- Netlify
-- Vercel
-- GitHub Pages
-- AWS S3 + CloudFront
-
-### CDN Integration
-For better performance:
-- Use CDN for Bootstrap and Font Awesome
-- Optimize images and assets
-- Enable gzip compression
+- **Redis Caching**: Frequently accessed URLs cached for fast redirection
+- **Database Indexing**: Optimized indexes for quick lookups
+- **Connection Pooling**: PostgreSQL connection pooling for efficiency
+- **Async Operations**: Non-blocking operations throughout the application
 
 ## 🧪 Testing
 
-### Manual Testing Checklist
-- [ ] URL shortening functionality
-- [ ] Form validation on all pages
-- [ ] Responsive design on different devices
-- [ ] Authentication flow
-- [ ] Dashboard operations
-- [ ] Redirect handling
-- [ ] Error states and edge cases
+Run the test suite:
 
-### Cross-browser Testing
-Test on all supported browsers and devices.
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage
+```
+
+## 📦 Deployment
+
+### Docker Deployment
+
+Create a `Dockerfile`:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+### Environment Variables for Production
+
+```env
+NODE_ENV=production
+PORT=3000
+DATABASE_URL=postgresql://user:pass@db-host:5432/db_name
+REDIS_URL=redis://redis-host:6379
+JWT_SECRET=your-production-secret
+BASE_URL=https://yourdomain.com
+```
+
+## 🛠️ Development
+
+### Project Structure
+
+```
+src/
+├── controllers/         # Request handlers
+│   ├── authController.js
+│   └── urlController.js
+├── middleware/          # Custom middleware
+│   ├── auth.js
+│   └── security.js
+├── models/              # Database models
+│   ├── User.js
+│   └── Url.js
+├── routes/              # Route definitions
+│   ├── auth.js
+│   ├── urls.js
+│   ├── redirect.js
+│   └── index.js
+├── database/            # Database configuration
+│   ├── connection.js
+│   ├── migrate.js
+│   └── schema.sql
+├── cache/               # Redis caching
+│   └── redisClient.js
+└── server.js            # Application entry point
+```
+
+### Adding New Features
+
+1. Create model in `src/models/`
+2. Add controller in `src/controllers/`
+3. Define routes in `src/routes/`
+4. Add validation schemas in `src/middleware/security.js`
+5. Update database schema if needed
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Database Connection Failed**
+   - Check PostgreSQL is running
+   - Verify DATABASE_URL is correct
+   - Ensure database exists
+
+2. **Redis Connection Failed**
+   - Redis is optional but recommended
+   - Check REDIS_URL configuration
+   - App will work without Redis
+
+3. **JWT Token Errors**
+   - Verify JWT_SECRET is set
+   - Check token format in Authorization header
+
+### Logs
+
+Enable debug logging:
+
+```bash
+DEBUG=url-shortener:* npm run dev
+```
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Add tests
 5. Submit a pull request
 
-## 📄 License
+## 📞 Support
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- Bootstrap for the responsive framework
-- Font Awesome for icons
-- Modern CSS techniques for animations
-- Inspiration from leading tech platforms
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation
+- Review the API examples
 
 ---
 
-**Built with ❤️ for the URL Trimmer project**
+**Happy URL Shortening! 🔗✨**
